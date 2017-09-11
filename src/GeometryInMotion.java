@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -7,72 +6,71 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-import java.util.Currency;
+import java.util.ArrayList;
 import java.util.Random;
-
 
 public class GeometryInMotion extends Application {
 
-    Random rand = new Random();
-    Thread main_thread = Thread.currentThread();
+    static ArrayList<GetReady> arr = new ArrayList<>();
 
+    private int countOfIteration =0;
+
+    Random random = new Random();
 
     public static void Geometry() {
         launch();
     }
 
     public void start(Stage primaryStage) throws Exception {
+
         Pane root = new Pane();
+        Scene scene = new Scene(root, 800, 600);
 
         Button button = new Button("Multy Threads");
         button.setTranslateX(20);
         button.setTranslateY(20);
         button.setOnAction(event -> {
-            Rectangle rectangle = CreateRectangle(root);
 
-            while (rectangle.getX() < 800) {
-                final double x = rectangle.getX() + 1;
+            Random random = new Random();
+            int count = random.nextInt((4) + 3);
 
-                try {
-                    main_thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            MyThreat[] threads = new MyThreat[count];
+            Rectangle[] rectangles = new Rectangle[count];
 
-                Platform.runLater(() -> {
-                    rectangle.setTranslateX(x);
-                });
+            GetReady getReady = new GetReady(threads, rectangles);
 
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            arr.add(getReady);
+
+            for (int i = 0; i <= arr.get(countOfIteration).rectangles.length-1; i++) {
+
+                CreateRectangle(i,root);
+
+                arr.get(countOfIteration).threads[i] = new MyThreat(i, (int) root.getWidth(), (int) root.getHeight(),countOfIteration);
             }
 
+            for (int i = 0; i <= arr.get(countOfIteration).rectangles.length-1; i++) {
+                arr.get(countOfIteration).threads[i].thrd.start();
+            }
+
+            countOfIteration = countOfIteration +1;
         });
 
         root.getChildren().addAll(button);
-        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public Rectangle CreateRectangle(Pane root) {
-        Rectangle rectangle = new Rectangle();
-        rectangle.setX(rand.nextInt((int) root.getWidth()));
-        rectangle.setY(rand.nextInt((int) root.getHeight()));
+    public void CreateRectangle(int i ,Pane root){
+        arr.get(countOfIteration).rectangles[i] = new Rectangle();
+        arr.get(countOfIteration).rectangles[i].setTranslateX(random.nextInt((int)root.getHeight()-100)+50);
+        arr.get(countOfIteration).rectangles[i].setTranslateY(random.nextInt((int)root.getWidth()-100)+50);
 
-        rectangle.setWidth(80);
-        rectangle.setHeight(30);
+        arr.get(countOfIteration).rectangles[i].setWidth(80);
+        arr.get(countOfIteration).rectangles[i].setHeight(30);
 
-        Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1);
-        rectangle.setFill(color);
+        Color color = new Color(random.nextDouble(),random.nextDouble(),random.nextDouble(), 1);
+        arr.get(countOfIteration).rectangles[i].setFill(color);
 
-        root.getChildren().addAll(
-                rectangle
-        );
-
-        return rectangle;
+        root.getChildren().addAll(arr.get(countOfIteration).rectangles[i]);
     }
-
 }
