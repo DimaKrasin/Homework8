@@ -4,6 +4,10 @@ import java.util.Random;
 
 public class MyThreat implements Runnable{
 
+    MyThreat(){
+
+    }
+
     Thread thrd;
     int count;
     int i;
@@ -69,9 +73,6 @@ public class MyThreat implements Runnable{
 
         do{
 
-            System.out.println("X "+ thrd.getName() + " = " +GeometryInMotion.arr.get(count).rectangles[i].getTranslateX());
-            System.out.println("Y "+ thrd.getName() + " = " +GeometryInMotion.arr.get(count).rectangles[i].getTranslateY());
-
             Platform.runLater(() -> {
 
                 GeometryInMotion.arr.get(count).rectangles[i].setTranslateX(countX);
@@ -111,7 +112,7 @@ public class MyThreat implements Runnable{
             }
 
             try {
-                Thread.sleep(24);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();}
         } while (true);

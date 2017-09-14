@@ -10,4 +10,8 @@ public class GetReady {
             this.rectangles = rectangles;
         }
 
+    GetReady(Rectangle[] rectangles){
+        this.rectangles = rectangles;
+    }
+
 }

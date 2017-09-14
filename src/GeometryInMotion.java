@@ -11,11 +11,15 @@ import java.util.Random;
 
 public class GeometryInMotion extends Application {
 
+    MyThreat[] threads;
+    Rectangle[] rectangles;
+    GetReady getReady;
+
     static ArrayList<GetReady> arr = new ArrayList<>();
 
-    private int countOfIteration =0;
+    private static int countOfIteration =0;
 
-    Random random = new Random();
+    private static Random random = new Random();
 
     public static void Geometry() {
         launch();
@@ -31,13 +35,11 @@ public class GeometryInMotion extends Application {
         button.setTranslateY(20);
         button.setOnAction(event -> {
 
-            Random random = new Random();
             int count = random.nextInt((4) + 3);
 
-            MyThreat[] threads = new MyThreat[count];
-            Rectangle[] rectangles = new Rectangle[count];
-
-            GetReady getReady = new GetReady(threads, rectangles);
+            threads = new MyThreat[count];
+            rectangles = new Rectangle[count];
+            getReady = new GetReady(threads, rectangles);
 
             arr.add(getReady);
 
@@ -55,18 +57,68 @@ public class GeometryInMotion extends Application {
             countOfIteration = countOfIteration +1;
         });
 
-        root.getChildren().addAll(button);
+
+        Button button3 = new Button("Optimal Threads");
+        button3.setTranslateX(180+160);
+        button3.setTranslateY(20);
+        button3.setOnAction(event -> {
+
+            int count = random.nextInt((4) + 3);
+
+            rectangles = new Rectangle[count];
+            getReady = new GetReady(rectangles);
+
+            for (int i = 0; i <= arr.get(countOfIteration).rectangles.length-1; i++) {
+                CreateRectangle(i,root);
+            }
+
+            arr.add(getReady);
+
+            OptimalThreads.OptimalMagic(countOfIteration);
+            countOfIteration = countOfIteration +1;
+        });
+
+
+        Button button2 = new Button("Single Thread");
+        button2.setTranslateX(180);
+        button2.setTranslateY(20);
+        button2.setOnAction(event -> {
+
+
+            Thread SingleTread = new Thread(()->{
+                while(true){
+                    for(int countOfI = 0;countOfI <= countOfIteration-1;countOfI++)
+                        for(int i = 0; i <= arr.get(countOfI).rectangles.length-1; i++){
+
+                            System.out.println("TranslateX of rectangle " + countOfI + i
+                                    + " = " + GeometryInMotion.arr.get(countOfI).rectangles[i].getTranslateX());
+                            System.out.println("TranslateY of rectangle " + countOfI + i
+                                    + " = " + GeometryInMotion.arr.get(countOfI).rectangles[i].getTranslateY());
+                        }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();}
+                }
+
+            });
+            SingleTread.start();});
+
+
+
+        root.getChildren().addAll(button,button2,button3);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public void CreateRectangle(int i ,Pane root){
+    public static void CreateRectangle(int i ,Pane root){
         arr.get(countOfIteration).rectangles[i] = new Rectangle();
         arr.get(countOfIteration).rectangles[i].setTranslateX(random.nextInt((int)root.getHeight()-100)+50);
         arr.get(countOfIteration).rectangles[i].setTranslateY(random.nextInt((int)root.getWidth()-100)+50);
 
-        arr.get(countOfIteration).rectangles[i].setWidth(80);
-        arr.get(countOfIteration).rectangles[i].setHeight(30);
+        arr.get(countOfIteration).rectangles[i].setWidth(random.nextInt(80)+40);
+        arr.get(countOfIteration).rectangles[i].setHeight(random.nextInt(40)+20);
 
         Color color = new Color(random.nextDouble(),random.nextDouble(),random.nextDouble(), 1);
         arr.get(countOfIteration).rectangles[i].setFill(color);
