@@ -58,27 +58,6 @@ public class GeometryInMotion extends Application {
         });
 
 
-        Button button3 = new Button("Optimal Threads");
-        button3.setTranslateX(180+160);
-        button3.setTranslateY(20);
-        button3.setOnAction(event -> {
-
-            int count = random.nextInt((4) + 3);
-
-            rectangles = new Rectangle[count];
-            getReady = new GetReady(rectangles);
-
-            for (int i = 0; i <= arr.get(countOfIteration).rectangles.length-1; i++) {
-                CreateRectangle(i,root);
-            }
-
-            arr.add(getReady);
-
-            OptimalThreads.OptimalMagic(countOfIteration);
-            countOfIteration = countOfIteration +1;
-        });
-
-
         Button button2 = new Button("Single Thread");
         button2.setTranslateX(180);
         button2.setTranslateY(20);
@@ -107,7 +86,7 @@ public class GeometryInMotion extends Application {
 
 
 
-        root.getChildren().addAll(button,button2,button3);
+        root.getChildren().addAll(button,button2);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
