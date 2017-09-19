@@ -1,3 +1,7 @@
+package com.goit.homework;
+
+import com.goit.homework.GetReady;
+import com.goit.homework.MyThreat;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

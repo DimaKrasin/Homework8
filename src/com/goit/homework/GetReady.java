@@ -1,3 +1,6 @@
+package com.goit.homework;
+
+import com.goit.homework.MyThreat;
 import javafx.scene.shape.Rectangle;
 
 public class GetReady {

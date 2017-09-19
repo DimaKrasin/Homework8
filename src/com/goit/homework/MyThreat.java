@@ -1,3 +1,5 @@
+package com.goit.homework;
+
 import javafx.application.Platform;
 
 import java.util.Random;
